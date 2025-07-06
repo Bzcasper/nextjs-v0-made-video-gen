@@ -1,35 +1,13 @@
-import { withAuth } from "next-auth/middleware"
+// Middleware temporarily disabled - next-auth not installed
+// Remove this file or install next-auth if authentication is needed
+
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-export default withAuth(
-  function middleware(req) {
-    // Add any custom middleware logic here if needed
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Allow access to auth pages without token
-        if (req.nextUrl.pathname.startsWith('/auth/')) {
-          return true
-        }
-        
-        // Allow access to API routes that don't require auth
-        if (req.nextUrl.pathname.startsWith('/api/auth/') || 
-            req.nextUrl.pathname.startsWith('/api/register') ||
-            req.nextUrl.pathname.startsWith('/api/fal/') ||
-            req.nextUrl.pathname.startsWith('/api/generate-prompts') ||
-            req.nextUrl.pathname.startsWith('/api/generate-media') ||
-            req.nextUrl.pathname.startsWith('/api/process-zip')) {
-          return true
-        }
-
-        // For protected routes, require a valid token
-        return !!token
-      },
-    },
-  }
-)
+export function middleware(request: NextRequest) {
+  // Currently allowing all requests since next-auth is not configured
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [
